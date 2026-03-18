@@ -19,7 +19,7 @@
     <img src="https://img.shields.io/badge/View-Current%20Projects-FF8C42?style=for-the-badge&logo=github&logoColor=white" alt="View Current Projects" />
   </a>
   <a href="https://github.com/orgs/WINGS-UHM/repositories?sort=updated">
-    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/WINGS-UHM/WINGS-UHM/main/.github/badges/org-latest.json&style=for-the-badge" alt="Latest Org Push" />
+    <img src="https://img.shields.io/endpoint?style=for-the-badge&url=https://raw.githubusercontent.com/WINGS-UHM/.github/main/.github/badges/org-latest.json" alt="Latest Org Push" />
   </a>
 </p>
 
