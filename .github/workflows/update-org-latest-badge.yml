@@ -1,0 +1,87 @@
+name: Update org latest badge
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "00 */12 * * *"
+  push:
+    branches: [ "main" ]   
+permissions:
+  contents: write
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout profile repo
+        uses: actions/checkout@v4
+
+      - name: Get latest updated repo in org
+        env:
+          ORG_NAME: WINGS-UHM
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p .github/badges
+
+          curl -fsSL \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/orgs/${ORG_NAME}/repos?type=public&sort=pushed&direction=desc&per_page=100" \
+            > repos.json
+
+          LATEST_REPO=$(jq -r '.[0].name' repos.json)
+          LATEST_PUSHED_AT=$(jq -r '.[0].pushed_at' repos.json)
+
+          if [ -z "${LATEST_REPO}" ] || [ "${LATEST_REPO}" = "null" ]; then
+            echo "No repositories found."
+            exit 1
+          fi
+
+          PUSH_EPOCH=$(date -d "${LATEST_PUSHED_AT}" +%s)
+          NOW_EPOCH=$(date +%s)
+          DIFF_SEC=$((NOW_EPOCH - PUSH_EPOCH))
+          DIFF_DAY=$((DIFF_SEC / 86400))
+
+          if [ "${DIFF_SEC}" -lt 86400 ]; then
+            AGE="today"
+            COLOR="brightgreen"
+          elif [ "${DIFF_DAY}" -eq 1 ]; then
+            AGE="1d ago"
+            COLOR="green"
+          elif [ "${DIFF_DAY}" -lt 7 ]; then
+            AGE="${DIFF_DAY}d ago"
+            COLOR="yellowgreen"
+          elif [ "${DIFF_DAY}" -lt 30 ]; then
+            AGE="$((DIFF_DAY / 7))w ago"
+            COLOR="yellow"
+          else
+            AGE="$((DIFF_DAY / 30))mo ago"
+            COLOR="orange"
+          fi
+
+          cat > .github/badges/org-latest.json <<EOF
+          {
+            "schemaVersion": 1,
+            "label": "Latest Org Push",
+            "message": "${LATEST_REPO} · ${AGE}",
+            "color": "${COLOR}",
+            "namedLogo": "github",
+            "logoColor": "white",
+            "style": "for-the-badge"
+          }
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/badges/org-latest.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "[update] org latest badge"
+            git push
+          fi
