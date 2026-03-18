@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "label": "Latest Org Push",
+  "message": ".github · today",
+  "color": "brightgreen",
+  "namedLogo": "github",
+  "logoColor": "white",
+  "style": "for-the-badge"
+}
