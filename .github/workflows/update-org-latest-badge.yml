@@ -3,9 +3,12 @@ name: Update org latest badge
 on:
   workflow_dispatch:
   schedule:
-    - cron: "00 */12 * * *"
+    - cron: "0 * * * *" 
   push:
-    branches: [ "main" ]   
+    branches: [ "master" ]
+    paths-ignore:
+      - ".github/badges/**"
+
 permissions:
   contents: write
 
@@ -13,13 +16,16 @@ jobs:
   update-badge:
     runs-on: ubuntu-latest
 
+    env:
+      ORG_NAME: WINGS-UHM
+      EXCLUDED_REPOS: '[".github","Web","Conf_Track"]'
+
     steps:
       - name: Checkout profile repo
         uses: actions/checkout@v4
 
       - name: Get latest updated repo in org
         env:
-          ORG_NAME: WINGS-UHM
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
@@ -32,11 +38,18 @@ jobs:
             "https://api.github.com/orgs/${ORG_NAME}/repos?type=public&sort=pushed&direction=desc&per_page=100" \
             > repos.json
 
-          LATEST_REPO=$(jq -r '.[0].name' repos.json)
-          LATEST_PUSHED_AT=$(jq -r '.[0].pushed_at' repos.json)
+          LATEST_REPO=$(jq -r --argjson excluded "$EXCLUDED_REPOS" '
+            map(select(.name as $n | ($excluded | index($n) | not))) |
+            .[0].name
+          ' repos.json)
+
+          LATEST_PUSHED_AT=$(jq -r --argjson excluded "$EXCLUDED_REPOS" '
+            map(select(.name as $n | ($excluded | index($n) | not))) |
+            .[0].pushed_at
+          ' repos.json)
 
           if [ -z "${LATEST_REPO}" ] || [ "${LATEST_REPO}" = "null" ]; then
-            echo "No repositories found."
+            echo "No eligible repositories found after exclusions."
             exit 1
           fi
 
