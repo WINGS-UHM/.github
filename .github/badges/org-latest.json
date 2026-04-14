@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "label": "Latest Org Push",
-  "message": "Fake-Base-Station · today",
-  "color": "brightgreen",
+  "message": "Fake-Base-Station · 1d ago",
+  "color": "green",
   "namedLogo": "github",
   "logoColor": "white",
   "style": "for-the-badge"
