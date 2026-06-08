@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "label": "Latest Org Push",
-  "message": "xapp_onboarder · today",
-  "color": "brightgreen",
+  "message": "xapp_onboarder · 1d ago",
+  "color": "green",
   "namedLogo": "github",
   "logoColor": "white",
   "style": "for-the-badge"
