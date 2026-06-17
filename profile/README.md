@@ -9,13 +9,13 @@
 |__/     \__/|______/|__/  \__/ \______/  \______/       |________/|__/  |__/|_______/ 
 ```
 <p align="center">
-  <a href="https://wings-uhm.github.io/Web/">
+  <a href="https://luna-xue.github.io/pages/team/">
     <img src="https://img.shields.io/badge/Visit-Webpage-0A66C2?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Visit Webpage" />
   </a>
-  <a href="https://wings-uhm.github.io/Web/docs/oran/">
+  <a href="https://luna-xue.github.io/pages/docs/oran/">
     <img src="https://img.shields.io/badge/Explore-O--RAN%20Testbed-2E8B57?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="Explore O-RAN Testbed" />
   </a>
-  <a href="https://wings-uhm.github.io/Web/projects/">
+  <a href="https://luna-xue.github.io/pages/projects/">
     <img src="https://img.shields.io/badge/View-Current%20Projects-FF8C42?style=for-the-badge&logo=github&logoColor=white" alt="View Current Projects" />
   </a>
   <a href="https://github.com/orgs/WINGS-UHM/repositories?sort=updated">
